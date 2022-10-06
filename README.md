@@ -19,6 +19,9 @@ nugu-bus
 │   └── js
 │       ├── index.js
 │       └── jquery-3.6.0.min.js
+├── struct
+│   ├── nugu.go
+│   └── openapi.go
 └── templates
     ├── footer.html
     ├── header.html
