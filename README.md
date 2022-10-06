@@ -17,6 +17,7 @@ nugu-bus
 │   ├── nugu.go.bak
 │   └── openapi.go
 ├── main.go
+├── requests.go
 ├── static
 │   ├── files
 │   └── js
