@@ -13,6 +13,9 @@ nugu-bus
 ├── README.md
 ├── go.mod
 ├── go.sum
+├── jsonstruct
+│   ├── nugu.go.bak
+│   └── openapi.go
 ├── main.go
 ├── static
 │   ├── files
