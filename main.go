@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const serviceKey = "Uc70KK1K8bzhcwQ+y+durUkD2VMV8wyequ5hxhQ39ghB0fJ0v3/mtW2qB4l/YRTs3w9YFSP47MRfnSVVszwb6A=="
+
 var logStream []string
 
 var db_station map[string]*dbStation
@@ -27,9 +29,11 @@ func main() {
 	r.GET("/", GetHomePage)
 	r.GET("/ping", GetPing)
 	r.GET("/health", GetHealth)
-	r.POST("/stationName", PostStationName)
-	r.POST("/busNumber", PostBusNumber)
-	r.GET("/busTime", GetBusTime)
+
+	r.POST("/dummy", PostDummy)
+	r.POST("/goodmorning", PostGoodmorning)
+	r.POST("/seeya", PostSeeya)
+
 	r.GET("/logstream", GetLogStream)
 	r.POST("/clearlog", PostClearLog)
 	r.Run()

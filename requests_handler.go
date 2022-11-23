@@ -2,18 +2,14 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
-	"net/url"
 	"io/ioutil"
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
 )
 
-var serviceKey = "Uc70KK1K8bzhcwQ+y+durUkD2VMV8wyequ5hxhQ39ghB0fJ0v3/mtW2qB4l/YRTs3w9YFSP47MRfnSVVszwb6A=="
-
-func PostStationName(c *gin.Context) {
+func PostDummy(c *gin.Context) {
 	printLog("POST  \"" + c.Request.URL.String() + "\"")
 
 	// Read request body
@@ -23,55 +19,42 @@ func PostStationName(c *gin.Context) {
 	}
 
 	var input map[string]interface{}
-	json.Unmarshal([]byte(body), &input)
-	userId := fmt.Sprintf("%v", input["userId"])
-	userId = strings.Replace(userId, " ", "", -1)
-	stSrch := fmt.Sprintf("%v", input["stationName"])
-	stSrch = strings.Replace(stSrch, " ", "", -1)
-
-	printLog(" └ userId: " + userId)
-	printLog(" └ stationName: " + stSrch)
-
-	// Generate HTTP GET request
-	api := "http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?"
-	params := url.Values{}
-	params.Add("serviceKey", serviceKey)
-	params.Add("stSrch", stSrch)
-	params.Add("resultType", "json")
-	printLog(api + params.Encode())
-
-	resp, err := http.Get(api + params.Encode())
+	err = json.Unmarshal([]byte(body), &input)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	defer resp.Body.Close()
+	fmt.Println(input)
 
-	resData, err := ioutil.ReadAll(resp.Body)
+	var nuguRequest NuguRequest
+	err = json.Unmarshal([]byte(body), &nuguRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	fmt.Println(nuguRequest)
 
-	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
-	json.Unmarshal(resData, &jsonData)
-	result := jsonData.MsgBody.ItemList[0]
+	// Create response skeleton
+	var nuguResponse NuguResponse
+	nuguResponse.Version = nuguRequest.Version
+	nuguResponse.ResultCode = "OK"
 
-	// Store DB
-	station := new(dbStation)
-	station.stNm = result.StNm
-	station.arsId = result.ArsID
-	station.stationId = result.StID
+	//////////////////////////////////////////////////
+	// Start Logic (logic_*.go file)
 
-	db_station[userId] = station
+	stName := DummyStationName("관악경찰서")
+	busNum := DummyBusNumber("5511")
+	result := DummyBusTime()
+	fmt.Println("[ ", stName, " / ", busNum, " ] - ", result)
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
-		"data": station.stNm,
-	})
+	nuguResponse.Output.ResultString = result
+	fmt.Println(nuguResponse)
+
+	// End Logic
+	//////////////////////////////////////////////////
+
+	c.JSON(http.StatusOK, nuguResponse)
 }
 
-func PostBusNumber(c *gin.Context) {
+func PostGoodmorning(c *gin.Context) {
 	printLog("POST  \"" + c.Request.URL.String() + "\"")
 
 	// Read request body
@@ -80,121 +63,64 @@ func PostBusNumber(c *gin.Context) {
 		fmt.Println(err.Error())
 	}
 
-	var input map[string]interface{}
-	json.Unmarshal([]byte(body), &input)
-	userId := fmt.Sprintf("%v", input["userId"])
-	strSrch := fmt.Sprintf("%v", input["busNumber"])
-	printLog(" └ userId: " + userId)
-	printLog(" └ strSrch: " + strSrch)
-
-	// Generate HTTP GET request
-	api := "http://ws.bus.go.kr/api/rest/busRouteInfo/getBusRouteList?"
-	params := url.Values{}
-	params.Add("serviceKey", serviceKey)
-	params.Add("strSrch", strSrch)
-	params.Add("resultType", "json")
-	printLog(api + params.Encode())
-
-	resp, err := http.Get(api + params.Encode())
+	var nuguRequest NuguRequest
+	err = json.Unmarshal([]byte(body), &nuguRequest)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	defer resp.Body.Close()
+	fmt.Println(nuguRequest)
 
-	resData, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// Create response skeleton
+	var nuguResponse NuguResponse
+	nuguResponse.Version = nuguRequest.Version
+	nuguResponse.ResultCode = "OK"
 
-	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
-	json.Unmarshal(resData, &jsonData)
-	result := jsonData.MsgBody.ItemList[0]
+	//////////////////////////////////////////////////
+	// Start Logic (logic_*.go file)
 
-	bus := new(dbBus)
-	bus.busRouteNm = result.BusRouteNm
-	bus.busRouteId = result.BusRouteID
+	result := "좋은아침 로직을 여기에 작성하세요"
 
-	db_bus[userId] = bus
+	nuguResponse.Output.ResultString = result
+	fmt.Println(nuguResponse)
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
-		"data": bus.busRouteNm,
-	})
+	// End Logic
+	//////////////////////////////////////////////////
+
+	c.JSON(http.StatusOK, nuguResponse)
 }
 
-func GetBusTime(c *gin.Context) {
-	printLog("GET  \"" + c.Request.URL.String() + "\"")
+func PostSeeya(c *gin.Context) {
+	printLog("POST  \"" + c.Request.URL.String() + "\"")
 
-	userId := c.Query("userId")
-	printLog(" └ userId: " + userId)
-
-	userStation, ok := db_station[userId]
-	if !ok {
-		fmt.Printf("db_station[" + userId + "] DB not exists\n")
-		return
-	}
-	userBus, ok := db_bus[userId]
-	if !ok {
-		fmt.Printf("db_bus[" + userId + "] DB not exists\n")
-		return
-	}
-	arsId := userStation.arsId
-	busRouteNm := userBus.busRouteNm
-
-	// Generate HTTP GET request
-	api := "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?"
-	params := url.Values{}
-	params.Add("serviceKey", serviceKey)
-	params.Add("arsId", arsId)
-	params.Add("resultType", "json")
-	printLog(api + params.Encode())
-
-	resp, err := http.Get(api + params.Encode())
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	defer resp.Body.Close()
-
-	resData, err := ioutil.ReadAll(resp.Body)
+	// Read request body
+	body, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
-	json.Unmarshal(resData, &jsonData)
-
-	var msg1, msg2 string
-	for _, item := range jsonData.MsgBody.ItemList {
-		if item.RtNm == busRouteNm {
-			msg1 = item.Arrmsg1
-			msg2 = item.Arrmsg2
-
-			break;
-		}
+	var nuguRequest NuguRequest
+	err = json.Unmarshal([]byte(body), &nuguRequest)
+	if err != nil {
+		fmt.Println(err.Error())
 	}
+	fmt.Println(nuguRequest)
 
-	msg1 = makeSense(msg1)
-	msg2 = makeSense(msg2)
-	data := busRouteNm + " 버스는 " + msg1 + "입니다. 다음 버스는 " + msg2 + "입니다."
+	// Create response skeleton
+	var nuguResponse NuguResponse
+	nuguResponse.Version = nuguRequest.Version
+	nuguResponse.ResultCode = "OK"
 
-	c.JSON(http.StatusOK, gin.H{
-		"message" : "OK",
-		"data" : data,
-	})
-}
+	//////////////////////////////////////////////////
+	// Start Logic (logic_*.go file)
 
-func makeSense(input string) string {
-	msg := strings.Split(input, "[")[0]
-	msg = strings.Replace(msg, " 도착", "", -1)
+	result := "다녀올게 로직을 여기에 작성하세요"
 
-	if strings.Compare(msg, "운행종료") != 0 {
-		msg += " 도착 예정"
-	}
+	nuguResponse.Output.ResultString = result
+	fmt.Println(nuguResponse)
 
-	return msg
+	// End Logic
+	//////////////////////////////////////////////////
+
+	c.JSON(http.StatusOK, nuguResponse)
 }
 
