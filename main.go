@@ -9,17 +9,7 @@ import (
 
 var logStream []string
 
-type dbStation struct {
-	stNm		string
-	arsId		string
-	stationId	string
-}
 var db_station map[string]*dbStation
-
-type dbBus struct {
-	busRouteId	string
-	busRouteNm	string
-}
 var db_bus map[string]*dbBus
 
 func main() {
@@ -36,6 +26,7 @@ func main() {
 
 	r.GET("/", GetHomePage)
 	r.GET("/ping", GetPing)
+	r.GET("/health", GetHealth)
 	r.POST("/stationName", PostStationName)
 	r.POST("/busNumber", PostBusNumber)
 	r.GET("/busTime", GetBusTime)

@@ -9,25 +9,9 @@ import (
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/eradegus/nugu-bus/jsonstruct"
 )
 
 var serviceKey = "Uc70KK1K8bzhcwQ+y+durUkD2VMV8wyequ5hxhQ39ghB0fJ0v3/mtW2qB4l/YRTs3w9YFSP47MRfnSVVszwb6A=="
-
-func GetHomePage(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Bus Info Query Server",
-	})
-}
-
-func GetPing(c *gin.Context) {
-	printLog("GET  \"" + c.Request.URL.String() + "\"")
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
-	})
-}
 
 func PostStationName(c *gin.Context) {
 	printLog("POST  \"" + c.Request.URL.String() + "\"")
@@ -68,7 +52,8 @@ func PostStationName(c *gin.Context) {
 	}
 
 	// Unmarshal json string
-	jsonData := jsonstruct.OpenAPIResponse{}
+	//jsonData := jsonstruct.OpenAPIResponse{}
+	jsonData := OpenAPIResponse{}
 	json.Unmarshal(resData, &jsonData)
 	result := jsonData.MsgBody.ItemList[0]
 
@@ -122,7 +107,8 @@ func PostBusNumber(c *gin.Context) {
 	}
 
 	// Unmarshal json string
-	jsonData := jsonstruct.OpenAPIResponse{}
+	//jsonData := jsonstruct.OpenAPIResponse{}
+	jsonData := OpenAPIResponse{}
 	json.Unmarshal(resData, &jsonData)
 	result := jsonData.MsgBody.ItemList[0]
 
@@ -177,7 +163,8 @@ func GetBusTime(c *gin.Context) {
 	}
 
 	// Unmarshal json string
-	jsonData := jsonstruct.OpenAPIResponse{}
+	//jsonData := jsonstruct.OpenAPIResponse{}
+	jsonData := OpenAPIResponse{}
 	json.Unmarshal(resData, &jsonData)
 
 	var msg1, msg2 string
@@ -197,22 +184,6 @@ func GetBusTime(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message" : "OK",
 		"data" : data,
-	})
-}
-
-func GetLogStream(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message" : "OK",
-		"log": logStream,
-	})
-}
-
-func PostClearLog(c *gin.Context) {
-	logStream = make([]string, 0)
-	printLog("[GIN-debug] Listening and serving HTTP")
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
 	})
 }
 

@@ -1,4 +1,4 @@
-package jsonstruct
+package main
 
 type OpenAPIResponse struct {
         ComMsgHeader ComMsgHeader `json:"comMsgHeader"`

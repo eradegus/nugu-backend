@@ -4,7 +4,7 @@ Backend proxy of nugu bus project
 
 ### How to run
 ```bash
-$ go run main.go
+$ go run .
 ```
 
 ### File structure
@@ -13,16 +13,16 @@ nugu-bus
 ├── README.md
 ├── go.mod
 ├── go.sum
-├── jsonstruct
-│   ├── nugu.go.bak
-│   └── openapi.go
 ├── main.go
-├── requests.go
+├── requests_commmon.go
+├── requests_handler.go
 ├── static
 │   ├── files
 │   └── js
 │       ├── index.js
 │       └── jquery-3.6.0.min.js
+├── struct_db.go
+├── struct_openapi.go
 └── templates
     ├── footer.html
     ├── header.html
