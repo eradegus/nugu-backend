@@ -11,3 +11,11 @@ type dbBus struct {
         busRouteNm      string
 }
 
+type UserDB struct {
+	DestAddr   string `json:"destAddr"`
+	BusStop    string `json:"busStop"`
+	BusNum     string `json:"busNum"`
+	ZipName    string `json:"zipName"`
+	SpecialDay string `json:"specialDay"`
+	StockName  string `json:"stockName"`
+}
