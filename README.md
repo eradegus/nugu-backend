@@ -23,9 +23,12 @@ nugu-bus
 ├── requests_handler.go
 ├── static
 │   ├── files
-│   └── js
-│       ├── index.js
-│       └── jquery-3.6.0.min.js
+│   │   ├── nugu_banner.png
+│   │   └── nugu_logo_white.png
+│   ├── js
+│   │   ├── index.js
+│   │   └── jquery-3.6.0.min.js
+│   └── manifest.json
 ├── struct_db.go
 ├── struct_nugu.go
 ├── struct_openapi.go

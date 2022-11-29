@@ -23,7 +23,7 @@ func main() {
 	r := gin.Default()
 	r.Use(CORSMiddleware())
 
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("templates/*.html")
 	r.Static("/static", "./static")
 
 	r.GET("/", GetHomePage)

@@ -1,60 +1,51 @@
 $(document).ready(function (){
-	window.logLength = 0;
-	setInterval(() => getLogStream(), 1000);
+	window.step = 1;
+	window.maxStep = 4;
 
-	http_util("post", "/clearlog", {uuid: window.uuid}, function (code, data) {
-		console.log(code, data);
-	}, function(code, err) {
-		console.log(code, err);
-		return;
+	$("#text-step").text(window.step + " / 4");
+	$("#div-input-" + window.step).show();
+
+	$("#btn-next").on("click", handlerBtnNext);
+
+	$("#btn-exit").on("click", handlerBtnExit);
+
+	$("#text-input-4").datepicker({
+		uiLibrary: "bootstrap4",
+		format: "yyyy-mm-dd"
 	});
+
 });
 
-const getLogStream = function () {
-	let divAccessLog = $("#accessLog");
-	http_util("get", "/logstream", {uuid: window.uuid}, function (code, data) {
-		if (data.log.length != window.logLength) {
-			for (let i = window.logLength; i < data.log.length; i++) {
-				divAccessLog.append(data.log[i] + "</br>");
-			}
-			window.logLength = data.log.length;
-			scrollToBottom(divAccessLog);
-		}
-	}, function(code, err) {
-		console.log(code, err);
-		return;
-	});
-}
+const handlerBtnNext = function () {
+	if (window.step == maxStep) {
+		//remove all and show finish message
+		$("#div-message-info").hide();
+		$("#div-buttons").hide();
+		$("#div-inputs").hide();
 
-// HTTP request wrapper
-const http_util = function (type, url, params, success_handler, error_handler, base_url) {
+		$("#div-loading").show();
+		let destAddr = $("#text-input-1").val();
+		let busStop = $("#text-input-2-1").val();
+		let busNum = $("#text-input-2-2").val();
+		let zipName = $("#text-input-3").val();
+		let specialDay = $("#text-input-4").val();
 
-	if(base_url) {
-		url = base_url + url;
+		// Send input data to server
+		console.log(destAddr + " / " + busStop + " / " + busNum  + " / " + zipName  + " / " + specialDay);
+
+		setTimeout(function () {
+			$("#div-loading").hide();
+			$("#div-message-finish").show();
+		}, 1000);
 	}
-
-	let success = arguments[3]?arguments[3]:function(){};
-	let error = arguments[4]?arguments[4]:function(){};
-
-	$.ajax({
-		type: type,
-		url: url,
-		dataType: "json",
-		data: params,
-		async: false,
-		success: function (data, textStatus, xhr) {
-			if(textStatus === "success"){
-				success(xhr.status, data);   // there returns the status code
-			}
-		},
-		error: function (xhr, error_text, statusText) {
-			error(xhr.status, xhr);  // there returns the status code
-		}
-	});
+	else {
+		window.step = window.step + 1;
+		$("#text-step").text(window.step + " / " + window.maxStep);
+		$("#div-input-" + window.step).show();
+	}
 }
 
-
-const scrollToBottom = function (targetDiv) {
-	targetDiv.scrollTop(targetDiv.height() + 999999999999);
+const handlerBtnExit = function() {
+	window.location.reload();
 }
 
