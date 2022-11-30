@@ -14,8 +14,11 @@ $(document).ready(function (){
 		uiLibrary: "bootstrap4",
 		format: "yyyy-mm-dd"
 	});
-//	$(".gj-icon").text("2");
 
+	let calendarIcon = $(".gj-icon");
+	calendarIcon.text("");
+	calendarIcon.addClass("fa-solid fa-calendar-check");
+	calendarIcon.removeClass("gj-icon");
 });
 
 const handlerBtnSkip = function () {
@@ -75,7 +78,6 @@ const handlerBtnNext = function () {
 		window.step = window.step + 1;
 		$("#text-step").text(window.step + " / " + window.maxStep);
 		$("#div-input-" + window.step).show();
-	//	$(".gj-icon").text("");
 	}
 }
 

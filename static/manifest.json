@@ -7,7 +7,7 @@
     "scope": "/",
     "start_url": "http://147.46.174.220:8088",
     "description": "SKT NUGU",
-    "orientation": "any",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "files/nugu_logo_white.png",
