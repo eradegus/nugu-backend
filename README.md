@@ -17,6 +17,7 @@ nugu-bus
 ├── README.md
 ├── go.mod
 ├── go.sum
+├── logic_bus.go
 ├── logic_stock.go
 ├── logic_weather.go
 ├── main.go
@@ -33,6 +34,7 @@ nugu-bus
 │   └── manifest.json
 ├── struct_db.go
 ├── struct_nugu.go
+├── struct_openapi_bus.go
 ├── struct_openapi_stock.go
 ├── struct_openapi_weather.go
 └── templates

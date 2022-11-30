@@ -9,17 +9,10 @@ import (
 	"encoding/json"
 )
 
-func DummyInfo() string {
-	return "창 밖을 보세요"
-}
+// Search detailed station info by station name
+func GetStationInfoByStationName(input string) StationInfo {
 
-// Examples 1 - Search detailed station info by station name
-func DummyStationName(input string) string {
-
-	// Placeholder
 	stSrch := input		// ex. "관악경찰서"
-	printLog(" └ stSrch: " + stSrch)
-	userId := "jeff"
 
 	// Generate HTTP GET request
 	api := "http://ws.bus.go.kr/api/rest/stationinfo/getStationByName?"
@@ -27,7 +20,7 @@ func DummyStationName(input string) string {
 	params.Add("serviceKey", serviceKey)
 	params.Add("stSrch", stSrch)
 	params.Add("resultType", "json")
-	printLog(api + params.Encode())
+	fmt.Println(api + params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {
@@ -41,30 +34,23 @@ func DummyStationName(input string) string {
 	}
 
 	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
+	jsonData := OpenAPIResponse_bus{}
 	json.Unmarshal(resData, &jsonData)
 	result := jsonData.MsgBody.ItemList[0]
 
 	// Store DB
-	station := new(dbStation)
-	station.stNm = result.StNm
-	station.arsId = result.ArsID
-	station.stationId = result.StID
+	stationInfo := new(StationInfo)
+	stationInfo.stNm = result.StNm
+	stationInfo.arsId = result.ArsID
+	stationInfo.stationId = result.StID
 
-	db_station[userId] = station
-	fmt.Println(station)
-
-	return station.stNm
+	return *stationInfo
 }
 
-// Examples 2 - Search detailed bud info by bus number
-func DummyBusNumber(input string) string {
+// Search detailed bud info by bus number
+func GetBusInfoByBusNumber(input string) BusInfo {
 
-	// Placeholder
 	strSrch := input	// ex. "5511"
-	printLog(" └ strSrch: " + strSrch)
-	userId := "jeff"
 
 	// Generate HTTP GET request
 	api := "http://ws.bus.go.kr/api/rest/busRouteInfo/getBusRouteList?"
@@ -72,7 +58,7 @@ func DummyBusNumber(input string) string {
 	params.Add("serviceKey", serviceKey)
 	params.Add("strSrch", strSrch)
 	params.Add("resultType", "json")
-	printLog(api + params.Encode())
+	fmt.Println(api + params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {
@@ -86,36 +72,21 @@ func DummyBusNumber(input string) string {
 	}
 
 	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
+	jsonData := OpenAPIResponse_bus{}
 	json.Unmarshal(resData, &jsonData)
 	result := jsonData.MsgBody.ItemList[0]
 
-	bus := new(dbBus)
-	bus.busRouteNm = result.BusRouteNm
-	bus.busRouteId = result.BusRouteID
+	busInfo := new(BusInfo)
+	busInfo.busRouteNm = result.BusRouteNm
+	busInfo.busRouteId = result.BusRouteID
 
-	db_bus[userId] = bus
-	fmt.Println(bus)
-
-	return bus.busRouteNm
+	return *busInfo
 }
 
-// Examples 3 - Get bus arrival info (need ex. 1 and 2 in advance)
-func DummyBusTime() string {
-	userId := "jeff"
-	userStation, ok := db_station[userId]
-	if !ok {
-		fmt.Printf("db_station[" + userId + "] DB not exists\n")
-		return ""
-	}
-	userBus, ok := db_bus[userId]
-	if !ok {
-		fmt.Printf("db_bus[" + userId + "] DB not exists\n")
-		return ""
-	}
-	arsId := userStation.arsId
-	busRouteNm := userBus.busRouteNm
+// Get bus arrival info
+func GetBusArrivalTimeByCodes(stationCode string, busCode string) string {
+	arsId := stationCode
+	busRouteNm := busCode
 
 	// Generate HTTP GET request
 	api := "http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid?"
@@ -123,7 +94,7 @@ func DummyBusTime() string {
 	params.Add("serviceKey", serviceKey)
 	params.Add("arsId", arsId)
 	params.Add("resultType", "json")
-	printLog(api + params.Encode())
+	fmt.Println(api + params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {
@@ -137,28 +108,27 @@ func DummyBusTime() string {
 	}
 
 	// Unmarshal json string
-	//jsonData := jsonstruct.OpenAPIResponse{}
-	jsonData := OpenAPIResponse{}
+	jsonData := OpenAPIResponse_bus{}
 	json.Unmarshal(resData, &jsonData)
 
-	var msg1, msg2 string
+	var arrmsg1, arrmsg2 string
 	for _, item := range jsonData.MsgBody.ItemList {
 		if item.RtNm == busRouteNm {
-			msg1 = item.Arrmsg1
-			msg2 = item.Arrmsg2
+			arrmsg1 = item.Arrmsg1
+			arrmsg2 = item.Arrmsg2
 
 			break;
 		}
 	}
 
-	msg1 = makeSense(msg1)
-	msg2 = makeSense(msg2)
-	data := busRouteNm + " 버스는 " + msg1 + "입니다. 다음 버스는 " + msg2 + "입니다."
+	arrmsg1 = makeBusString(arrmsg1)
+	arrmsg2 = makeBusString(arrmsg2)
+	data := busRouteNm + " 버스는 " + arrmsg1 + "입니다. 다음 버스는 " + arrmsg2 + "입니다."
 
 	return data
 }
 
-func makeSense(input string) string {
+func makeBusString(input string) string {
 	msg := strings.Split(input, "[")[0]
 	msg = strings.Replace(msg, " 도착", "", -1)
 

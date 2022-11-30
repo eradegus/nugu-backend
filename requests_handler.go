@@ -22,8 +22,31 @@ func PostUserDB(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
+	userDB.StationInfo = GetStationInfoByStationName(userDB.BusStop)
+	userDB.BusInfo = GetBusInfoByBusNumber(userDB.BusNum)
+
+	/* Start Debug Log */
+	// TODO Remove this block later
 	fmt.Println(userDB)
 
+	fmt.Println("")
+	fmt.Println("# Weather Info #")
+	//strWeather1 := GetWeatherInfoByTownName("")
+	//fmt.Println(strWeather1)
+	strWeather1, strWeather2, strWeather3, strWeather4 := GetWeatherInfoByTownName(userDB.DestAddr)
+	fmt.Println(strWeather1 + " / " + strWeather2 + " / " + strWeather3 + " / " + strWeather4)
+
+	fmt.Println("")
+	fmt.Println("# Bus Info #")
+	strBus := GetBusArrivalTimeByCodes(userDB.StationInfo.arsId, userDB.BusInfo.busRouteNm)
+	fmt.Println(strBus)
+
+	fmt.Println("")
+	fmt.Println("# Stock Info #")
+	strStock := GetStockPriceByStockName(userDB.StockName)
+	fmt.Println(strStock)
+	/* End Debug Log */
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",

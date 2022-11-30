@@ -40,7 +40,7 @@ func getWeatherLoca (input string) (string, string) {
 	return targetX, targetY
 }
 
-func WeatherCheck(input string) (weatherDesc string, temparature string, nowRain string, futureRain string) {
+func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature string, nowRain string, futureRain string) {
 
 	curLoca := input		// ex. 관악구
 	curX, curY := getWeatherLoca(curLoca)

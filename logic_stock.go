@@ -10,7 +10,7 @@ import (
 	"crypto/tls"
 )
 
-func StockCheck(input string) string {
+func GetStockPriceByStockName(input string) string {
 
 	companyName := input		// ex. SK텔레콤
 

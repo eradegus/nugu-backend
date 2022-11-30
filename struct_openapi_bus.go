@@ -1,6 +1,6 @@
 package main
 
-type OpenAPIResponse struct {
+type OpenAPIResponse_bus struct {
         ComMsgHeader ComMsgHeader `json:"comMsgHeader"`
         MsgHeader    MsgHeader    `json:"msgHeader"`
         MsgBody      MsgBody      `json:"msgBody"`
