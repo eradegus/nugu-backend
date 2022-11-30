@@ -14,16 +14,18 @@ $ PORT=8088 go run .
 ### File structure
 ```bash
 nugu-bus
+├── README.md
 ├── go.mod
 ├── go.sum
-├── logic_dummy.go
+├── logic_stock.go
+├── logic_weather.go
 ├── main.go
-├── README.md
 ├── requests_commmon.go
 ├── requests_handler.go
 ├── static
 │   ├── files
-│   │   ├── nugu_banner.png
+│   │   ├── NationalRegionCodeutf8.csv
+│   │   ├── nugu_banner.jpg
 │   │   └── nugu_logo_white.png
 │   ├── js
 │   │   ├── index.js
@@ -31,10 +33,10 @@ nugu-bus
 │   └── manifest.json
 ├── struct_db.go
 ├── struct_nugu.go
-├── struct_openapi.go
+├── struct_openapi_stock.go
+├── struct_openapi_weather.go
 └── templates
     ├── footer.html
     ├── header.html
     └── index.html
-
 ```

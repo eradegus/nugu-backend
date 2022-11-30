@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,7 @@ func GetHomePage(c *gin.Context) {
 }
 
 func GetPing(c *gin.Context) {
-	printLog("GET  \"" + c.Request.URL.String() + "\"")
+	fmt.Println("GET  \"" + c.Request.URL.String() + "\"")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
@@ -24,23 +25,7 @@ func GetPing(c *gin.Context) {
 }
 
 func GetHealth(c *gin.Context) {
-	printLog("GET  \"" + c.Request.URL.String() + "\"")
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
-	})
-}
-
-func GetLogStream(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message" : "OK",
-		"log": logStream,
-	})
-}
-
-func PostClearLog(c *gin.Context) {
-	logStream = make([]string, 0)
-	printLog("[GIN-debug] Listening and serving HTTP")
+	fmt.Println("GET  \"" + c.Request.URL.String() + "\"")
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",

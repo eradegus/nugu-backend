@@ -9,42 +9,40 @@ import (
 	"strconv"
 	"time"
 	"bufio"
-    "encoding/csv"
-    "os"
+	"encoding/csv"
+	"os"
 )
 
-func getWeatherLoca (input string) (string, string){
+func getWeatherLoca (input string) (string, string) {
 
 	targetLoca := input
 
 	// file open
-    file, _ := os.Open("static/files/NationalRegionCodeutf8.csv")
+	file, _ := os.Open("static/files/NationalRegionCodeutf8.csv")
 
-    // csv reader generation
-    rdr := csv.NewReader(bufio.NewReader(file))
+	// csv reader generation
+	rdr := csv.NewReader(bufio.NewReader(file))
 
-    // csv read all
-    rows, _ := rdr.ReadAll()
+	// csv read all
+	rows, _ := rdr.ReadAll()
 	var targetX, targetY string
 
 	// rows, row read
-    for i, _ := range rows {
-        if rows[i][3] == targetLoca {
+	for i, _ := range rows {
+		if rows[i][3] == targetLoca {
 			targetX = rows[i][5]
 			targetY = rows[i][6]
 			fmt.Println("targetX: " + targetX)
 			fmt.Println("targetY: " + targetY)
 			break
 		}
-    }
+	}
 	return targetX, targetY
 }
 
 func WeatherCheck(input string) (weatherDesc string, temparature string, nowRain string, futureRain string) {
 
-	// Placeholder
 	curLoca := input		// ex. 관악구
-
 	curX, curY := getWeatherLoca(curLoca)
 
 	// Time Calculation
@@ -69,8 +67,7 @@ func WeatherCheck(input string) (weatherDesc string, temparature string, nowRain
 	params.Add("base_time", "0500")
 	params.Add("nx", curX)
 	params.Add("ny", curY)
-
-	printLog(api + params.Encode())
+	fmt.Println(api + params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {
@@ -98,7 +95,7 @@ func WeatherCheck(input string) (weatherDesc string, temparature string, nowRain
 				switch item.FcstValue{
 				case "1" :
 					weatherDesc = "맑고"
-				case "3" : 
+				case "3" :
 					weatherDesc = "구름이 많고"
 				case "4" :
 					weatherDesc = "흐리고"
@@ -140,10 +137,11 @@ func WeatherCheck(input string) (weatherDesc string, temparature string, nowRain
 					futureRain = "소나기가 올 예정입니다."
 				case "0" :
 					futureRain = " "
-				}q
+				}
 			}
 		}
 	}
 
 	return weatherDesc, temparature, nowRain, futureRain
 }
+

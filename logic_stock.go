@@ -12,7 +12,6 @@ import (
 
 func StockCheck(input string) string {
 
-	// Placeholder
 	companyName := input		// ex. SK텔레콤
 
 	// Time Calculation
@@ -31,7 +30,7 @@ func StockCheck(input string) string {
 	params.Add("resultType", "json")
 	params.Add("basDt", pastDate)
 	params.Add("itmsNm", companyName)
-	printLog(api + params.Encode())
+	fmt.Println(api + params.Encode())
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get(api + params.Encode())

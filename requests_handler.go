@@ -10,7 +10,7 @@ import (
 )
 
 func PostUserDB(c *gin.Context) {
-	printLog("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -30,53 +30,8 @@ func PostUserDB(c *gin.Context) {
 	})
 }
 
-func PostDummy(c *gin.Context) {
-	printLog("POST  \"" + c.Request.URL.String() + "\"")
-
-	// Read request body
-	body, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-
-	var input map[string]interface{}
-	err = json.Unmarshal([]byte(body), &input)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(input)
-
-	var nuguRequest NuguRequest
-	err = json.Unmarshal([]byte(body), &nuguRequest)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	fmt.Println(nuguRequest)
-
-	// Create response skeleton
-	var nuguResponse NuguResponse
-	nuguResponse.Version = nuguRequest.Version
-	nuguResponse.ResultCode = "OK"
-
-	//////////////////////////////////////////////////
-	// Start Logic (logic_*.go file)
-
-	stName := DummyStationName("관악경찰서")
-	busNum := DummyBusNumber("5511")
-	result := DummyBusTime()
-	fmt.Println("[ ", stName, " / ", busNum, " ] - ", result)
-
-	nuguResponse.Output.ResultString = result
-	fmt.Println(nuguResponse)
-
-	// End Logic
-	//////////////////////////////////////////////////
-
-	c.JSON(http.StatusOK, nuguResponse)
-}
-
 func PostGoodmorning(c *gin.Context) {
-	printLog("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -111,7 +66,7 @@ func PostGoodmorning(c *gin.Context) {
 }
 
 func PostSeeya(c *gin.Context) {
-	printLog("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
