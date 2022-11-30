@@ -14,15 +14,14 @@ $ PORT=8088 go run .
 ### File structure
 ```bash
 nugu-bus
-├── README.md
 ├── go.mod
 ├── go.sum
 ├── logic_dummy.go
 ├── main.go
+├── README.md
 ├── requests_commmon.go
 ├── requests_handler.go
 ├── static
-│   ├── files
 │   └── js
 │       ├── index.js
 │       └── jquery-3.6.0.min.js
@@ -33,4 +32,5 @@ nugu-bus
     ├── footer.html
     ├── header.html
     └── index.html
+
 ```
