@@ -12,6 +12,7 @@ type BusInfo struct {
 }
 
 type UserDB struct {
+	TimeStamp    string      `json:"timeStamp"`
 	DestAddr     string      `json:"destAddr"`
 	BusStop      string      `json:"busStop"`
 	BusNum       string      `json:"busNum"`

@@ -14,8 +14,12 @@ type ResultString struct {
 	Type  string `json:"type"`
 	Value string `json:"value"`
 }
+type Location struct {
+	Value string `json:"value"`
+}
 type Parameters struct {
 	ResultString ResultString `json:"resultString"`
+	Location     Location     `json:"location"`
 }
 type Action struct {
 	ActionName string     `json:"actionName"`

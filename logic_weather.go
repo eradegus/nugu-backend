@@ -113,7 +113,7 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 				case "4" :
 					nowRain = "소나기가 오고 있으며"
 				case "0" :
-					nowRain = " "
+					nowRain = ""
 				}
 			}
 		}
@@ -136,7 +136,7 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 				case "4" :
 					futureRain = "소나기가 올 예정입니다."
 				case "0" :
-					futureRain = " "
+					futureRain = ""
 				}
 			}
 		}

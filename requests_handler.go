@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,32 +27,8 @@ func PostUserDB(c *gin.Context) {
 	userDB.StationInfo = GetStationInfoByStationName(userDB.BusStop)
 	userDB.BusInfo = GetBusInfoByBusNumber(userDB.BusNum)
 
-	/* Start Debug Log */
-	// TODO Remove this block later
-
+	userDB.TimeStamp = time.Now().String()
 	fmt.Println(userDB)
-
-	fmt.Println("")
-	fmt.Println("# Weather Info #")
-	strWeather1 := GetWeatherInfoByTownName("관악구")
-	fmt.Println(strWeather1)
-	strWeather1, strWeather2, strWeather3, strWeather4 := GetWeatherInfoByTownName(userDB.DestAddr)
-	fmt.Println(strWeather1 + " / " + strWeather2 + " / " + strWeather3 + " / " + strWeather4)
-
-	fmt.Println("")
-	fmt.Println("# Bus Info #")
-	strBus := GetBusArrivalTimeByCodes(userDB.StationInfo.arsId, userDB.BusInfo.busRouteNm)
-	fmt.Println(strBus)
-
-	fmt.Println("")
-	fmt.Println("# Stock Info #")
-	strStock := GetStockPriceByStockName(userDB.StockName)
-	fmt.Println(strStock)
-
-	fmt.Println("")
-	fmt.Println("# Anniversary Info ")
-	strAnniversary := GetDDayInfoByDate(userDB.SpecialDay)
-	/* End Debug Log */
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
@@ -82,7 +59,30 @@ func PostGoodmorning(c *gin.Context) {
 	//////////////////////////////////////////////////
 	// Start Logic (logic_*.go file)
 
-	result := "좋은아침 로직을 여기에 작성하세요"
+	result := "좋은아침이에요 "
+	if userDB.TimeStamp != "" {
+
+		// Weather
+		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
+		wHomeDesc, wHomeTemp, wHomeNowRain, wHomeFutureRain := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeTemp + "도로 " + wHomeDesc + " " + wHomeNowRain + " " + wHomeFutureRain
+
+		wDestDesc, wDescTemp, wDescNowRain, wDescFutureRain := GetWeatherInfoByTownName(userDB.DestAddr)
+		result += userDB.DestAddr + "에는 " + wDestDesc + " " + wDescTemp + " " + wDescNowRain + " " + wDescFutureRain + "입니다. "
+
+		// Stock
+		stockPrice := GetStockPriceByStockName(userDB.StockName)
+		result += userDB.StockName + "의 어제 종가는 " + stockPrice + "원 이에요."
+
+		// Anniversary
+		dDayMessage := GetDDayInfoByDate(userDB.SpecialDay)
+		fmt.Println(dDayMessage)
+		if dDayMessage != "" {
+			result += " 오늘은 기념일 " + dDayMessage
+		}
+	}
+
+	result += " 종은하루되세요!"
 
 	nuguResponse.Output.ResultGoodmorning = result
 	fmt.Println(nuguResponse)
@@ -117,7 +117,23 @@ func PostSeeya(c *gin.Context) {
 	//////////////////////////////////////////////////
 	// Start Logic (logic_*.go file)
 
-	result := "다녀올게 로직을 여기에 작성하세요"
+	result := "네! "
+	if userDB.TimeStamp != "" {
+
+		// Bus
+		busArrivalMessage := GetBusArrivalTimeByCodes(userDB.StationInfo.arsId, userDB.BusInfo.busRouteNm)
+		result += userDB.StationInfo.stNm + " 정류장에 " + busArrivalMessage
+
+		// Weather
+		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
+		_, _, wHomeNowRain, wHomeFutureRain := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+		_, _, wDescNowRain, wDescFutureRain := GetWeatherInfoByTownName(userDB.DestAddr)
+		if wHomeNowRain != "" || wHomeFutureRain != "" || wDescNowRain != "" || wDescFutureRain != "" {
+			result += "나갈때 우산 챙기는거 잊지마세요! "
+		}
+	}
+
+	result += " 잘 다녀오세요!"
 
 	nuguResponse.Output.ResultSeeya = result
 	fmt.Println(nuguResponse)

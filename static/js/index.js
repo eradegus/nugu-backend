@@ -44,7 +44,7 @@ const handlerBtnNext = function () {
 		let busNum = !$("#text-input-2-2").val() ? "5511" : $("#text-input-2-2").val();
 		let zipName = !$("#text-input-3").val() ? "한남더힐" : $("#text-input-3").val();
 		let stockName = !$("#text-input-4").val() ? "SK텔레콤" : $("#text-input-4").val();
-		let specialDay = !$("#text-input-5").val() ? "2022-11-28" : $("#text-input-5").val();
+		let specialDay = !$("#text-input-5").val() ? "2021-12-04" : $("#text-input-5").val();
 
 		// Send input data to server
 		let param = {destAddr: destAddr, busStop: busStop, busNum: busNum, zipName: zipName, stockName: stockName, specialDay: specialDay};
