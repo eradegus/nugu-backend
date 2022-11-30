@@ -2,7 +2,95 @@
 
 <!--Embed the header.html template at this location-->
 {{ template "header.html" .}}
-	<div class="container-ad-list" style="margin-top: 30px;">
+	<div class="container-title" style="margin: 20px;">
+		<div id="div-message-info">
+			<p style="font-weight: bold; color: #595959;">저에게 당신에 대해 조금 더 알려주세요.</br>매일 아침 더욱 풍부한 정보로 도움을 드릴게요.</p>
+		</div>
+		<div id="div-buttons" style="margin-top: 30px">
+			<button id="btn-skip" type="button" class="btn btn-outline-secondary" style="width:30%;">건너뛰기</button>
+			<div id="text-step" style="display: inline-block; width: 37%; text-align: center; color: grey;">1/4</div>
+			<button id="btn-next" type="button" class="btn btn-outline-primary" style="width:30%;">완료</button>
+		</div>
+
+		<div id="div-loading" style="text-align: center; padding-top: 200px; display: none">
+			<div class="spinner-grow text-primary"></div>
+			<div class="spinner-grow text-success"></div>
+			<div class="spinner-grow text-info"></div>
+			<div class="spinner-grow text-warning"></div>
+			<div class="spinner-grow text-danger"></div>
+		</div>
+
+		<div id="div-message-finish" style="display: none;">
+			</br>
+			<p style="font-weight: bold;">짝짝짝 <i class="fa-solid fa-hands-clapping" style="color: #009DFF;"></i> 등록이 모두 끝났어요 !</p>
+			</br>
+			<p style="font-weight: bold;">이제 "아리아, 좋은아침"</p>
+			<p style="font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"아리아, 다녀올게" 라고 말해보세요.</p>
+			</br>
+			<div>
+				<div style="color: lightcoral;">"아리아, 좋은아침"</div>
+				<div id="text-example-goodmorning" style="color: lightskyblue; text-align: right;">"Placeholder"</div>
+				</br>
+				<div style="color: lightcoral;">"아리아, 다녀올게"</div>
+				<div id="text-example-seeya" style="color: lightskyblue; text-align: right">"Placeholder"</div>
+			</div>
+			<div style="margin-top: 50px; text-align: center;">
+				<button id="btn-exit" type="button" class="btn btn-primary" style="width: 50%;">나가기</button>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="div-inputs" class="container-input-list" style="margin: 10px 20px;">
+		<div id="div-input-5" class="container-input" style="margin: 10px 0px; background-color: #FFFFFF; height: 150px; display: none; padding: 15px; border-radius: 20px;">
+			<p style="font-weight: bold;">마지막이에요, 연인과의 기념일도 알려주세요!</p>
+			<small class="form-text text-muted">잊지 않도록 50일, 100일, 1주년 등을 알려드릴게요!</small>
+			</br>
+			<div style="text-align: center;">
+				<input id="text-input-5" type="text" class="form-control" style="text-align: center;" placeholder="Select date">
+			</div>
+		</div>
+		<div id="div-input-4" class="container-input" style="margin: 10px 0px; background-color: #FFFFFF; height: 150px; display: none; padding: 15px; border-radius: 20px;">
+			<p style="font-weight: bold;">관심 주식정보를 알려주세요!</p>
+			<small class="form-text text-muted">어제의 주식 종가를 알려드릴게요!</small>
+			</br>
+			<div style="text-align: center;">
+				<input id="text-input-4" class="form-control form-control-md" type="text" style="text-align: center;" placeholder="SK텔레콤"></input>
+			</div>
+		</div>
+		<div id="div-input-3" class="container-input" style="margin: 10px 0px; background-color: #FFFFFF; height: 150px; display: none; padding: 15px; border-radius: 20px;">
+			<p style="font-weight: bold;">거의 다 왔어요! 혹시 관심 부동산이 있나요?</p>
+			<small class="form-text text-muted">관심 부동산에 실거래가 발생했을때 제가 알려드릴게요!</small>
+			</br>
+			<div style="text-align: center;">
+				<input id="text-input-3" class="form-control form-control-md" type="text" style="text-align: center;" placeholder="한남더힐"></input>
+			</div>
+		</div>
+		<div id="div-input-2" class="container-input" style="margin: 10px 0px; background-color: #FFFFFF; height: 150px; display: none; padding: 15px; border-radius: 20px;">
+			<p style="font-weight: bold;">자주타는 버스정류장과 버스번호를 알려주세요</p>
+			<small class="form-text text-muted">집에서 나가기 직전 버스 도착 정보를 알려드릴게요!</small>
+			</br>
+			<div class="align-items-center" style="text-align: center;">
+				<form>
+				<div class="form-row">
+					<div class="form-group col-6">
+						<input id="text-input-2-1" class="form-control form-control-md" type="text" style="text-align: center;" placeholder="정류장 명"></input>
+					</div>
+					<div class="form-group col-6">
+						<input id="text-input-2-2" class="form-control form-control-md" type="text" style="text-align: center;" placeholder="버스 번호"></input>
+					</div>
+				</div>
+				</form>
+			</div>
+		</div>
+		<div id="div-input-1" class="container-input" style="margin: 10px 0px; background-color: #FFFFFF; height: 150px; display: none; padding: 15px; border-radius: 20px;">
+			<p style="font-weight: bold;">직장/학교는 어디에 있나요?</p>
+			<small class="form-text text-muted">매일 아침 직장/학교의 날씨까지 제가 알려드릴게요!</small>
+			</br>
+			<div style="text-align: center;">
+				<input id="text-input-1" class="form-control form-control-md" type="text" style="text-align: center;" placeholder="서초구"></input>
+			</div>
+		</div>
 	</div>
 
 <!--Embed the footer.html template at this location-->

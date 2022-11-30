@@ -9,6 +9,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func PostUserDB(c *gin.Context) {
+	printLog("POST  \"" + c.Request.URL.String() + "\"")
+
+	// Read request body
+	body, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	err = json.Unmarshal([]byte(body), &userDB)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(userDB)
+
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "OK",
+	})
+}
+
 func PostDummy(c *gin.Context) {
 	printLog("POST  \"" + c.Request.URL.String() + "\"")
 

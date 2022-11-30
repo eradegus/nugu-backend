@@ -1,0 +1,17 @@
+{
+    "name": "SKT NUGU",
+    "short_name": "SKT NUGU",
+    "theme_color": "#009DFF",
+    "background_color": "#009DFF",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "http://147.46.174.220:8088",
+    "description": "SKT NUGU",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "files/nugu_logo_white.png",
+            "sizes": "512x512"
+        }
+    ]
+}

@@ -22,9 +22,13 @@ nugu-bus
 ├── requests_commmon.go
 ├── requests_handler.go
 ├── static
-│   └── js
-│       ├── index.js
-│       └── jquery-3.6.0.min.js
+│   ├── files
+│   │   ├── nugu_banner.png
+│   │   └── nugu_logo_white.png
+│   ├── js
+│   │   ├── index.js
+│   │   └── jquery-3.6.0.min.js
+│   └── manifest.json
 ├── struct_db.go
 ├── struct_nugu.go
 ├── struct_openapi.go

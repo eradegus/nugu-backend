@@ -14,6 +14,8 @@ var logStream []string
 var db_station map[string]*dbStation
 var db_bus map[string]*dbBus
 
+var userDB UserDB
+
 func main() {
 	printLog("[GIN-debug] Listening and serving HTTP")
 
@@ -23,12 +25,14 @@ func main() {
 	r := gin.Default()
 	r.Use(CORSMiddleware())
 
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("templates/*.html")
 	r.Static("/static", "./static")
 
 	r.GET("/", GetHomePage)
 	r.GET("/ping", GetPing)
 	r.GET("/health", GetHealth)
+
+	r.POST("/userdb", PostUserDB)
 
 	r.POST("/dummy", PostDummy)
 	r.POST("/goodmorning", PostGoodmorning)

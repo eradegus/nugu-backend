@@ -11,7 +11,7 @@ import (
 ////////////////////////////////////////////////////////////////////////////////
 func GetHomePage(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", gin.H{
-			"title": "Bus Info Query Server",
+			"title": "SKT NUGU Routine",
 	})
 }
 
