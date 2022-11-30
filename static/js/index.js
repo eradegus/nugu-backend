@@ -69,6 +69,7 @@ const handlerBtnNext = function () {
 
 		$("#text-example-goodmorning").html(exampleGoodmorning);
 		$("#text-example-seeya").html(exampleSeeya);
+
 		setTimeout(function () {
 			$("#div-loading").hide();
 			$("#div-message-finish").show();

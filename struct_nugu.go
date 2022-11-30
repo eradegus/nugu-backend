@@ -64,7 +64,8 @@ type NuguResponse struct {
 	Directives []Directives `json:"directives"`
 }
 type Output struct {
-	ResultString   string `json:"resultString"`
+	ResultGoodmorning   string `json:"resultGoodmorning"`
+	ResultSeeya         string `json:"resultSeeya"`
 }
 type ProgressReport struct {
 	ProgressReportDelayInMilliseconds    int64 `json:"progressReportDelayInMilliseconds"`

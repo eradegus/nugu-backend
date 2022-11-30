@@ -11,6 +11,8 @@ import (
 // Common Reqeust Handlers
 ////////////////////////////////////////////////////////////////////////////////
 func GetHomePage(c *gin.Context) {
+	fmt.Println("GET  \"" + c.Request.URL.String() + "\"")
+
 	c.HTML(http.StatusOK, "index.html", gin.H{
 			"title": "SKT NUGU Routine",
 	})

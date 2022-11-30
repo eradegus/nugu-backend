@@ -28,12 +28,13 @@ func PostUserDB(c *gin.Context) {
 
 	/* Start Debug Log */
 	// TODO Remove this block later
+
 	fmt.Println(userDB)
 
 	fmt.Println("")
 	fmt.Println("# Weather Info #")
-	//strWeather1 := GetWeatherInfoByTownName("")
-	//fmt.Println(strWeather1)
+	strWeather1 := GetWeatherInfoByTownName("관악구")
+	fmt.Println(strWeather1)
 	strWeather1, strWeather2, strWeather3, strWeather4 := GetWeatherInfoByTownName(userDB.DestAddr)
 	fmt.Println(strWeather1 + " / " + strWeather2 + " / " + strWeather3 + " / " + strWeather4)
 
@@ -79,7 +80,7 @@ func PostGoodmorning(c *gin.Context) {
 
 	result := "좋은아침 로직을 여기에 작성하세요"
 
-	nuguResponse.Output.ResultString = result
+	nuguResponse.Output.ResultGoodmorning = result
 	fmt.Println(nuguResponse)
 
 	// End Logic
@@ -114,7 +115,7 @@ func PostSeeya(c *gin.Context) {
 
 	result := "다녀올게 로직을 여기에 작성하세요"
 
-	nuguResponse.Output.ResultString = result
+	nuguResponse.Output.ResultSeeya = result
 	fmt.Println(nuguResponse)
 
 	// End Logic
