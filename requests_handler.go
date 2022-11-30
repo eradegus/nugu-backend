@@ -47,6 +47,10 @@ func PostUserDB(c *gin.Context) {
 	fmt.Println("# Stock Info #")
 	strStock := GetStockPriceByStockName(userDB.StockName)
 	fmt.Println(strStock)
+
+	fmt.Println("")
+	fmt.Println("# Anniversary Info ")
+	strAnniversary := GetDDayInfoByDate(userDB.SpecialDay)
 	/* End Debug Log */
 
 	c.JSON(http.StatusOK, gin.H{
