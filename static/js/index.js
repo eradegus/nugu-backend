@@ -5,6 +5,7 @@ $(document).ready(function (){
 	$("#text-step").text(window.step + " / " + window.maxStep);
 	$("#div-input-" + window.step).show();
 
+	$("#btn-skip").on("click", handlerBtnSkip);
 	$("#btn-next").on("click", handlerBtnNext);
 
 	$("#btn-exit").on("click", handlerBtnExit);
@@ -13,8 +14,18 @@ $(document).ready(function (){
 		uiLibrary: "bootstrap4",
 		format: "yyyy-mm-dd"
 	});
+//	$(".gj-icon").text("2");
 
 });
+
+const handlerBtnSkip = function () {
+	if (window.step != maxStep) {
+		$("#div-input-" + window.step).hide();
+		window.step = window.step + 1;
+		$("#text-step").text(window.step + " / " + window.maxStep);
+		$("#div-input-" + window.step).show();
+	}
+}
 
 const handlerBtnNext = function () {
 	if (window.step == maxStep) {
@@ -24,12 +35,13 @@ const handlerBtnNext = function () {
 		$("#div-inputs").hide();
 
 		$("#div-loading").show();
-		let destAddr = $("#text-input-1").val();
-		let busStop = $("#text-input-2-1").val();
-		let busNum = $("#text-input-2-2").val();
-		let zipName = $("#text-input-3").val();
-		let stockName = $("#text-input-4").val();
-		let specialDay = $("#text-input-5").val();
+
+		let destAddr = !$("#text-input-1").val() ? "서초구" : $("#text-input-1").val();
+		let busStop = !$("#text-input-2-1").val() ? "관악경찰서" : $("#text-input-2-1").val();
+		let busNum = !$("#text-input-2-2").val() ? "5511" : $("#text-input-2-2").val();
+		let zipName = !$("#text-input-3").val() ? "한남더힐" : $("#text-input-3").val();
+		let stockName = !$("#text-input-4").val() ? "SK텔레콤" : $("#text-input-4").val();
+		let specialDay = !$("#text-input-5").val() ? "2022-11-28" : $("#text-input-5").val();
 
 		// Send input data to server
 		let param = {destAddr: destAddr, busStop: busStop, busNum: busNum, zipName: zipName, stockName: stockName, specialDay: specialDay};
@@ -40,6 +52,20 @@ const handlerBtnNext = function () {
 			return;
 		});
 
+		// Generate example message
+		let exampleGoodmorning = "\"좋은 아침이에요!</br> 현재 관악구 날씨는 15도로 맑아요</br>"
+								+ destAddr + "에는 오늘 비가 올 수 있어요</br>"
+								+ stockName + "의 어제 종가는 100,000원 이에요</br>"
+								+ "어제 " + zipName + "에 새로운 실거래가 발생했어요</br>"
+								+ "실거래가는 12억 3456만원 이에요</br>"
+								+ "좋은 하루 되세요!\"";
+		let exampleSeeya = "\"네! " + busNum + " 버스는 " + busStop + " 정류장에 </br>"
+								+ "12분 후 도착예정이에요 </br>"
+								+ "다음 버스는 34분 후 도착예정이에요</br>"
+								+ "잘 다녀오세요!\"";
+
+		$("#text-example-goodmorning").html(exampleGoodmorning);
+		$("#text-example-seeya").html(exampleSeeya);
 		setTimeout(function () {
 			$("#div-loading").hide();
 			$("#div-message-finish").show();
@@ -49,6 +75,7 @@ const handlerBtnNext = function () {
 		window.step = window.step + 1;
 		$("#text-step").text(window.step + " / " + window.maxStep);
 		$("#div-input-" + window.step).show();
+	//	$(".gj-icon").text("");
 	}
 }
 
