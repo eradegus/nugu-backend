@@ -11,6 +11,7 @@ import (
 	"bufio"
 	"encoding/csv"
 	"os"
+	"strings"
 )
 
 func getWeatherLoca (input string) (string, string) {
@@ -31,16 +32,14 @@ func getWeatherLoca (input string) (string, string) {
 	for i, _ := range rows {
 		if rows[i][3] == targetLoca {
 			targetX = rows[i][5]
-			targetY = rows[i][6]
-			fmt.Println("targetX: " + targetX)
-			fmt.Println("targetY: " + targetY)
+			targetY = rows[i][6]			
 			break
 		}
 	}
 	return targetX, targetY
 }
 
-func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature string, nowRain string, futureRain string) {
+func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature string, isRain bool, isSnow bool) {
 
 	curLoca := input		// ex. 관악구
 	curX, curY := getWeatherLoca(curLoca)
@@ -85,6 +84,8 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 
 	itemList := jsonData.Response.Body.Items.Item
 
+	var nowRain, futureRain string
+
 	for _, item := range itemList {
 		if item.FcstDate == curDate && item.FcstTime == curTime {
 			if item.Category == "TMP" {
@@ -92,29 +93,11 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 				continue
 			}
 			if item.Category == "SKY" {
-				switch item.FcstValue{
-				case "1" :
-					weatherDesc = "맑고"
-				case "3" :
-					weatherDesc = "구름이 많고"
-				case "4" :
-					weatherDesc = "흐리고"
-				}
+				weatherDesc = item.FcstValue
 				continue
 			}
 			if item.Category == "PTY" {
-				switch item.FcstValue{
-				case "1" :
-					nowRain = "비가 오고 있으며"
-				case "2" :
-					nowRain = "눈과 비가 같이 오고 있으며"
-				case "3" :
-					nowRain = "눈이 오고 있으며"
-				case "4" :
-					nowRain = "소나기가 오고 있으며"
-				case "0" :
-					nowRain = ""
-				}
+				nowRain = item.FcstValue
 			}
 		}
 	}
@@ -126,22 +109,29 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 			num2, _ = strconv.Atoi(item.FcstTime)
 
 			if num2 > num1 {
-				switch item.FcstValue{
-				case "1" :
-					futureRain = "비가 올 예정입니다."
-				case "2" :
-					futureRain = "눈과 비가 같이 올 예정입니다."
-				case "3" :
-					futureRain = "눈이 올 예정입니다."
-				case "4" :
-					futureRain = "소나기가 올 예정입니다."
-				case "0" :
-					futureRain = ""
-				}
+				futureRain = item.FcstValue				
 			}
 		}
 	}
 
-	return weatherDesc, temparature, nowRain, futureRain
+	isRain = false
+	isSnow = false
+
+	if nowRain == "1" || nowRain== "4" || futureRain == "1" || futureRain == "4" {
+		isRain = true
+	}
+
+	if nowRain == "2" || futureRain == "2" {
+		isRain = true
+		isSnow = true
+	}
+
+	if nowRain == "3" || futureRain == "3" {
+		isSnow = true
+	}
+
+	strings.Replace(temparature, "-", "영하 ", -1)
+
+	return weatherDesc, temparature, isRain, isSnow
 }
 

@@ -59,16 +59,29 @@ func PostGoodmorning(c *gin.Context) {
 	//////////////////////////////////////////////////
 	// Start Logic (logic_*.go file)
 
-	result := "좋은아침이에요 "
+	result := "좋은 아침이에요 "
 	if userDB.TimeStamp != "" {
 
 		// Weather
 		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
-		wHomeDesc, wHomeTemp, wHomeNowRain, wHomeFutureRain := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
-		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeTemp + "도로 " + wHomeDesc + " " + wHomeNowRain + " " + wHomeFutureRain
+		wHomeDesc, wHomeTemp, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeDesc + " 기온은 " + wHomeTemp+ "도 입니다. "
+		
+		wDestDesc, wDescTemp, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
+		result += userDB.DestAddr + "는 " + wDestDesc + " 기온은 " + wDescTemp + "도 입니다. 오늘은 "
 
-		wDestDesc, wDescTemp, wDescNowRain, wDescFutureRain := GetWeatherInfoByTownName(userDB.DestAddr)
-		result += userDB.DestAddr + "에는 " + wDestDesc + " " + wDescTemp + " " + wDescNowRain + " " + wDescFutureRain + "입니다. "
+		if wHomeIsRain || wDescIsRain {
+			result += "비"
+			if wHomeIsSnow || wDescIsSnow {
+				result += " 또는 눈"
+			} else {
+				result += "소식이 있어요. "
+			}
+		}
+		
+		if wHomeIsSnow || wDescIsSnow {
+			result += "눈소식이 있어요. "
+		}
 
 		// Stock
 		stockPrice := GetStockPriceByStockName(userDB.StockName)
@@ -82,7 +95,7 @@ func PostGoodmorning(c *gin.Context) {
 		}
 	}
 
-	result += " 종은하루되세요!"
+	result += " 좋은 하루 되세요!"
 
 	nuguResponse.Output.ResultGoodmorning = result
 	fmt.Println(nuguResponse)
@@ -126,10 +139,10 @@ func PostSeeya(c *gin.Context) {
 
 		// Weather
 		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
-		_, _, wHomeNowRain, wHomeFutureRain := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
-		_, _, wDescNowRain, wDescFutureRain := GetWeatherInfoByTownName(userDB.DestAddr)
-		if wHomeNowRain != "" || wHomeFutureRain != "" || wDescNowRain != "" || wDescFutureRain != "" {
-			result += "나갈때 우산 챙기는거 잊지마세요! "
+		_, _, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+		_, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
+		if wHomeIsRain || wHomeIsSnow || wDescIsRain || wDescIsSnow {
+			result += " 오늘 비 또는 눈소식이 있으니, 나갈때 우산 챙기는거 잊지마세요! "
 		}
 	}
 
