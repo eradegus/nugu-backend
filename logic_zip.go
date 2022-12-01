@@ -10,7 +10,6 @@ import (
     "encoding/csv"
     "os"
 	"time"
-	"strconv"
 	"strings"
 )
 
@@ -117,22 +116,20 @@ func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 
 	itemLists := xmlData.Body.Items.Item
 
-	resultZipInfo := ""
+	resultZipPrice := ""
 	for _, item := range itemLists {
-		if item.Apt == targetApt && item.Day == pastDay {
-			resultZipInfo += item.Deal
+		if item.Apt == targetApt {
+			resultZipPrice += item.Deal
 			break;
 		}
 	}
 
-	resultZipInfo = strings.Replace(resultZipInfo, ",", "", -1)
-	resultZipInfo = strings.Replace(resultZipInfo, " ", "", -1)
+	resultZipPrice = strings.Replace(resultZipPrice, ",", "", -1)
+	resultZipPrice = strings.Replace(resultZipPrice, " ", "", -1)
 
-	var resultZipInfoNum int
-	if resultZipInfo != "" {
-		resultZipInfoNum, _ = strconv.Atoi(resultZipInfo)
-		resultZipInfoNum = resultZipInfoNum*10000
-		resultZipInfo = strconv.Itoa(resultZipInfoNum)
+	if resultZipPrice != "" {
+		resultZipPrice += "0000"
 	}
-	return resultZipInfo
+
+	return resultZipPrice
 }
