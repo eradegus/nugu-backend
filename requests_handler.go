@@ -105,6 +105,15 @@ func PostGoodmorning(c *gin.Context) {
 		stockPrice := GetStockPriceByStockName(userDB.StockName)
 		result += userDB.StockName + "의 어제 종가는 " + stockPrice + "원 이에요."
 
+		// Real Estate
+		targetLocation := GetLocationInfoByAptName("한남더힐")
+		targetCode := GetCodeByZipLoca(targetLocation)
+		resultZipInfo := GetZipInfoByCode(targetCode, "한남더힐")
+		if resultZipInfo != "" {
+			result += " 어제 " + "한남더힐" + " 아파트에 새로운 실거래가 발생했어요."
+			result += " 실거래가는 " + resultZipInfo + "원 이에요."
+		}
+
 		// Anniversary
 		dDayMessage := GetDDayInfoByDate(userDB.SpecialDay)
 		fmt.Println(dDayMessage)
