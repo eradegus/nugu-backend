@@ -86,7 +86,6 @@ func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 	pastFullTime := nowFullTime.AddDate(0, 0, -1)
 	pastDate := pastFullTime.Format("20060102")
 	pastMonth := pastDate[:6]
-	pastDay := pastDate[6:]
 
 	// Generate HTTP GET request
 	api := "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev?"

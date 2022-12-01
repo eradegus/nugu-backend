@@ -111,13 +111,13 @@ func PostGoodmorning(c *gin.Context) {
 
 		// Stock
 		stockPrice := GetStockPriceByStockName(userDB.StockName)
-		result += userDB.StockName + "의 어제 종가는 " + stockPrice + "원 이에요."
+		result += userDB.StockName + "의 어제 종가는 " + stockPrice + "원이에요."
 
 		// Real Estate
 		zipPrice := GetZipPriceByCodeAndName(userDB.ZipInfo.TownCode, userDB.ZipName)
 		if zipPrice != "" {
 			result += " 어제 " + userDB.ZipName + " 아파트에 새로운 실거래가 발생했어요."
-			result += " 실거래가는 " + zipPrice + "원 이에요."
+			result += " 실거래가는 " + zipPrice + "원이에요."
 		}
 
 		// Anniversary

@@ -35,23 +35,23 @@ func CheckAnniversary(days int) string {
 	if days <= 1000 {
 		modHundred := days % 100
 		if modHundred == 0 {
-			return strconv.Itoa(days / 100) + "00 일이에요 축하해요"
+			return strconv.Itoa(days / 100) + "00일이에요 축하해요."
 		}
 
 		gapHundred := 100 - modHundred
 		if gapHundred <= 7 {
-			return strconv.Itoa(days / 100 + 1) + "00 일까지 " + strconv.Itoa(gapHundred) + " 일 남았어요"
+			return strconv.Itoa(days / 100 + 1) + "00일까지 " + strconv.Itoa(gapHundred) + "일 남았어요."
 		}
 	}
 
 	modYear := days % 365
 	if modYear == 0 {
-		return strconv.Itoa(days / 365) + " 주년이에요 축하해요"
+		return strconv.Itoa(days / 365) + "주년이에요 축하해요."
 	}
 
 	gapYear := 365 - modYear
 	if gapYear <= 7 {
-		return strconv.Itoa(days / 365 + 1) + " 주년까지 " + strconv.Itoa(gapYear) + " 일 남았어요"
+		return strconv.Itoa(days / 365 + 1) + "주년까지 " + strconv.Itoa(gapYear) + "일 남았어요."
 	}
 
 	return ""
