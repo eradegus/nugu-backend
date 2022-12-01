@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func GetLocationInfoByAptName(input string) string {
+func GetLocationInfoByAptName(input string) (string, string) {
 
 	targetApt := input		// ex. "반포자이"
 
@@ -42,14 +42,17 @@ func GetLocationInfoByAptName(input string) string {
 	xml.Unmarshal(resData, &xmlData)
 
 	itemLists := xmlData.Body.Items.Item
-	var targetLocation string
+	var townName string
 	for _, item := range itemLists {
 		if item.KaptName == targetApt {
-			targetLocation = item.As2
+			townName = item.As2
 			break
 		}
 	}
-	return targetLocation
+
+	townCode := GetCodeByZipLoca(townName)
+
+	return townName, townCode
 }
 
 func GetCodeByZipLoca(input string) string {
@@ -77,7 +80,7 @@ func GetCodeByZipLoca(input string) string {
 	return targetCode
 }
 
-func GetZipInfoByCode(targetCode string, targetApt string) string {
+func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 
 	// Time Calculation
 	nowFullTime := time.Now()

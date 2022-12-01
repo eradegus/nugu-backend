@@ -24,8 +24,16 @@ func PostUserDB(c *gin.Context) {
 		fmt.Println(err.Error())
 	}
 
+	// DB for bus
 	userDB.StationInfo = GetStationInfoByStationName(userDB.BusStop)
 	userDB.BusInfo = GetBusInfoByBusNumber(userDB.BusNum)
+
+	// DB for weather
+	userDB.HomeTown.LocationX, userDB.HomeTown.LocationY = GetTownLocationCoordinateByName(userDB.HomeAddr)
+	userDB.DestTown.LocationX, userDB.DestTown.LocationY = GetTownLocationCoordinateByName(userDB.DestAddr)
+
+	// DB for zip
+	userDB.ZipInfo.TownName, userDB.ZipInfo.TownCode = GetLocationInfoByAptName(userDB.ZipName)
 
 	userDB.TimeStamp = time.Now().String()
 	fmt.Println(userDB)
@@ -65,7 +73,7 @@ func PostGoodmorning(c *gin.Context) {
 
 		// Weather
 		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
-		wHomeDesc, wHomeTemp, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+		wHomeDesc, wHomeTemp, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownLocation(userDB.HomeTown)
 
 		switch wHomeDesc {
 		case "1":
@@ -77,8 +85,8 @@ func PostGoodmorning(c *gin.Context) {
 		}
 
 		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeDesc + " 기온은 " + wHomeTemp+ "도 입니다. "
-		
-		wDestDesc, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
+
+		wDestDesc, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownLocation(userDB.DestTown)
 		switch wDestDesc {
 		case "1":
 			wDestDesc = "맑습니다. "
@@ -106,12 +114,10 @@ func PostGoodmorning(c *gin.Context) {
 		result += userDB.StockName + "의 어제 종가는 " + stockPrice + "원 이에요."
 
 		// Real Estate
-		targetLocation := GetLocationInfoByAptName("한남더힐")
-		targetCode := GetCodeByZipLoca(targetLocation)
-		resultZipInfo := GetZipInfoByCode(targetCode, "한남더힐")
-		if resultZipInfo != "" {
-			result += " 어제 " + "한남더힐" + " 아파트에 새로운 실거래가 발생했어요."
-			result += " 실거래가는 " + resultZipInfo + "원 이에요."
+		zipPrice := GetZipPriceByCodeAndName(userDB.ZipInfo.TownCode, userDB.ZipName)
+		if zipPrice != "" {
+			result += " 어제 " + userDB.ZipName + " 아파트에 새로운 실거래가 발생했어요."
+			result += " 실거래가는 " + zipPrice + "원 이에요."
 		}
 
 		// Anniversary
@@ -165,9 +171,9 @@ func PostSeeya(c *gin.Context) {
 		result += userDB.StationInfo.stNm + " 정류장에 " + busArrivalMessage
 
 		// Weather
-		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
-		_, _, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
-		_, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
+//		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
+		_, _, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownLocation(userDB.HomeTown)
+		_, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownLocation(userDB.DestTown)
 		if wHomeIsRain || wHomeIsSnow || wDescIsRain || wDescIsSnow {
 			result += " 오늘 비 또는 눈소식이 있으니, 나갈때 우산 챙기는거 잊지마세요! "
 		}

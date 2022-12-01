@@ -44,7 +44,7 @@ func GetStockPriceByStockName(input string) string {
 
 	jsonData := OpenAPIResponse_stock{}
 	json.Unmarshal(resData, &jsonData)
-	resultClpr := jsonData.Response.Body.Items.Item[0].Clpr
+	resultPrice := jsonData.Response.Body.Items.Item[0].Clpr
 
-	return resultClpr
+	return resultPrice
 }

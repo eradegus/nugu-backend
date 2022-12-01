@@ -14,9 +14,9 @@ import (
 	"strings"
 )
 
-func getWeatherLoca (input string) (string, string) {
+func GetTownLocationCoordinateByName(input string) (string, string) {
 
-	targetLoca := input
+	targetLoca := input		// ex. 관악구
 
 	// file open
 	file, _ := os.Open("static/files/NationalRegionCodeutf8.csv")
@@ -39,10 +39,9 @@ func getWeatherLoca (input string) (string, string) {
 	return targetX, targetY
 }
 
-func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature string, isRain bool, isSnow bool) {
+func GetWeatherInfoByTownLocation(town Town) (weatherDesc string, temparature string, isRain bool, isSnow bool) {
 
-	curLoca := input		// ex. 관악구
-	curX, curY := getWeatherLoca(curLoca)
+	curX, curY := town.LocationX, town.LocationY
 
 	// Time Calculation
 	nowFullTime := time.Now()

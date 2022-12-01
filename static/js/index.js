@@ -47,7 +47,7 @@ const handlerBtnNext = function () {
 		let specialDay = !$("#text-input-5").val() ? "2021-12-04" : $("#text-input-5").val();
 
 		// Send input data to server
-		let param = {destAddr: destAddr, busStop: busStop, busNum: busNum, zipName: zipName, stockName: stockName, specialDay: specialDay};
+		let param = {homeAddr: "관악구", destAddr: destAddr, busStop: busStop, busNum: busNum, zipName: zipName, stockName: stockName, specialDay: specialDay};
 		http_util("post","/userdb", JSON.stringify(param), function (code, data) {
 			console.log(code, data);
 		}, function (code, err) {
