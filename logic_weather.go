@@ -130,7 +130,7 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 		isSnow = true
 	}
 
-	strings.Replace(temparature, "-", "영하 ", -1)
+	temparature = strings.Replace(temparature, "-", "영하 ", -1)
 
 	return weatherDesc, temparature, isRain, isSnow
 }

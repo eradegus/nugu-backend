@@ -19,8 +19,6 @@ func GetStockPriceByStockName(input string) string {
 	pastFullTime := nowFullTime.AddDate(0, 0, -1) /////////시간에 따라 조정하기
 	pastDate := pastFullTime.Format("20060102")
 
-	fmt.Println("pastDate: " + pastDate)
-
 	// Generate HTTP GET request
 	api := "https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?"
 	params := url.Values{}

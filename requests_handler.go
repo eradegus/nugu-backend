@@ -60,27 +60,45 @@ func PostGoodmorning(c *gin.Context) {
 	// Start Logic (logic_*.go file)
 
 	result := "좋은 아침이에요 "
+
 	if userDB.TimeStamp != "" {
 
 		// Weather
 		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
 		wHomeDesc, wHomeTemp, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownName(HomeTownNameFromNuguCandle)
+
+		switch wHomeDesc {
+		case "1":
+			wHomeDesc = "맑고"
+		case "3":
+			wHomeDesc = "구름이 많고"
+		case "4":
+			wHomeDesc = "흐리고"
+		}
+
 		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeDesc + " 기온은 " + wHomeTemp+ "도 입니다. "
 		
-		wDestDesc, wDescTemp, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
-		result += userDB.DestAddr + "는 " + wDestDesc + " 기온은 " + wDescTemp + "도 입니다. 오늘은 "
+		wDestDesc, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownName(userDB.DestAddr)
+		switch wDestDesc {
+		case "1":
+			wDestDesc = "맑습니다. "
+		case "3":
+			wDestDesc = "구름이 많습니다. "
+		case "4":
+			wDestDesc = "흐립니다. "
+		}
+
+		result += userDB.DestAddr + "는 현재 " + wDestDesc
 
 		if wHomeIsRain || wDescIsRain {
-			result += "비"
+			result += "오늘은 비"
 			if wHomeIsSnow || wDescIsSnow {
-				result += " 또는 눈"
+				result += " 또는 눈소식이 있어요. "
 			} else {
 				result += "소식이 있어요. "
 			}
-		}
-		
-		if wHomeIsSnow || wDescIsSnow {
-			result += "눈소식이 있어요. "
+		} else if wHomeIsSnow || wDescIsSnow {
+			result += "오늘은 눈소식이 있어요. "
 		}
 
 		// Stock
