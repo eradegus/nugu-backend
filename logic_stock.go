@@ -28,7 +28,8 @@ func GetStockPriceByStockName(input string) string {
 	params.Add("resultType", "json")
 	params.Add("basDt", pastDate)
 	params.Add("itmsNm", companyName)
-	fmt.Println(api + params.Encode())
+
+	fmt.Printf("[OpenAPI/Stock  ] GET %s%s\n", api, params.Encode())
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, err := http.Get(api + params.Encode())

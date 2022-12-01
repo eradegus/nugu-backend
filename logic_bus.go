@@ -94,7 +94,8 @@ func GetBusArrivalTimeByCodes(stationCode string, busCode string) string {
 	params.Add("serviceKey", serviceKey)
 	params.Add("arsId", arsId)
 	params.Add("resultType", "json")
-	fmt.Println(api + params.Encode())
+
+	fmt.Printf("[OpenAPI/Bus    ] GET %s%s\n", api, params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {

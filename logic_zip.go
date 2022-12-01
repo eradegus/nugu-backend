@@ -96,7 +96,7 @@ func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 	params.Add("LAWD_CD", targetCode)
 	params.Add("DEAL_YMD", pastMonth)
 
-	fmt.Println(api + params.Encode())
+	fmt.Printf("[OpenAPI/APT    ] GET %s%s\n", api, params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {

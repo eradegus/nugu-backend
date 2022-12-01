@@ -44,7 +44,7 @@ func PostUserDB(c *gin.Context) {
 }
 
 func PostGoodmorning(c *gin.Context) {
-	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Printf("[SKT-NUGU] POST  \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -57,7 +57,7 @@ func PostGoodmorning(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(nuguRequest)
+	fmt.Printf("[SKT-NUGU] Request: %v\n", nuguRequest)
 
 	// Create response skeleton
 	var nuguResponse NuguResponse
@@ -86,7 +86,7 @@ func PostGoodmorning(c *gin.Context) {
 
 		result += " 현재 " + HomeTownNameFromNuguCandle + " 날씨는 " + wHomeDesc + " 기온은 " + wHomeTemp+ "도 입니다. "
 
-		wDestDesc, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownLocation(userDB.DestTown)
+		wDestDesc, _, wDestIsRain, wDestIsSnow := GetWeatherInfoByTownLocation(userDB.DestTown)
 		switch wDestDesc {
 		case "1":
 			wDestDesc = "맑습니다. "
@@ -96,16 +96,20 @@ func PostGoodmorning(c *gin.Context) {
 			wDestDesc = "흐립니다. "
 		}
 
-		result += userDB.DestAddr + "는 현재 " + wDestDesc
+		result += userDB.DestAddr + "는 " + wDestDesc
 
-		if wHomeIsRain || wDescIsRain {
+		//////////////////////////////
+		// NOTE: ONLY FOR DEMO
+		wHomeIsSnow = true
+
+		if wHomeIsRain || wDestIsRain {
 			result += "오늘은 비"
-			if wHomeIsSnow || wDescIsSnow {
+			if wHomeIsSnow || wDestIsSnow {
 				result += " 또는 눈소식이 있어요. "
 			} else {
 				result += "소식이 있어요. "
 			}
-		} else if wHomeIsSnow || wDescIsSnow {
+		} else if wHomeIsSnow || wDestIsSnow {
 			result += "오늘은 눈소식이 있어요. "
 		}
 
@@ -122,7 +126,6 @@ func PostGoodmorning(c *gin.Context) {
 
 		// Anniversary
 		dDayMessage := GetDDayInfoByDate(userDB.SpecialDay)
-		fmt.Println(dDayMessage)
 		if dDayMessage != "" {
 			result += " 오늘은 기념일 " + dDayMessage
 		}
@@ -131,7 +134,7 @@ func PostGoodmorning(c *gin.Context) {
 	result += " 좋은 하루 되세요!"
 
 	nuguResponse.Output.ResultGoodmorning = result
-	fmt.Println(nuguResponse)
+	fmt.Printf("[SKT-NUGU] Response: %v\n", nuguResponse)
 
 	// End Logic
 	//////////////////////////////////////////////////
@@ -140,7 +143,7 @@ func PostGoodmorning(c *gin.Context) {
 }
 
 func PostSeeya(c *gin.Context) {
-	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Printf("[SKT-NUGU] POST  \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -153,7 +156,7 @@ func PostSeeya(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(nuguRequest)
+	fmt.Printf("[SKT-NUGU] Request: %v\n", nuguRequest)
 
 	// Create response skeleton
 	var nuguResponse NuguResponse
@@ -171,9 +174,13 @@ func PostSeeya(c *gin.Context) {
 		result += userDB.StationInfo.stNm + " 정류장에 " + busArrivalMessage
 
 		// Weather
-//		HomeTownNameFromNuguCandle := nuguRequest.Action.Parameters.Location.Value
 		_, _, wHomeIsRain, wHomeIsSnow := GetWeatherInfoByTownLocation(userDB.HomeTown)
 		_, _, wDescIsRain, wDescIsSnow := GetWeatherInfoByTownLocation(userDB.DestTown)
+
+		//////////////////////////////
+		// NOTE: ONLY FOR DEMO
+		wHomeIsSnow = true
+
 		if wHomeIsRain || wHomeIsSnow || wDescIsRain || wDescIsSnow {
 			result += " 오늘 비 또는 눈소식이 있으니, 나갈때 우산 챙기는거 잊지마세요! "
 		}
@@ -182,7 +189,7 @@ func PostSeeya(c *gin.Context) {
 	result += " 잘 다녀오세요!"
 
 	nuguResponse.Output.ResultSeeya = result
-	fmt.Println(nuguResponse)
+	fmt.Printf("[SKT-NUGU] Response: %v\n", nuguResponse)
 
 	// End Logic
 	//////////////////////////////////////////////////

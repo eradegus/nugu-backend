@@ -65,7 +65,8 @@ func GetWeatherInfoByTownLocation(town Town) (weatherDesc string, temparature st
 	params.Add("base_time", "0500")
 	params.Add("nx", curX)
 	params.Add("ny", curY)
-	fmt.Println(api + params.Encode())
+
+	fmt.Printf("[OpenAPI/Weather] GET %s%s\n", api, params.Encode())
 
 	resp, err := http.Get(api + params.Encode())
 	if err != nil {
