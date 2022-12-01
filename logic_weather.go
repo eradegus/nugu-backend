@@ -32,7 +32,7 @@ func getWeatherLoca (input string) (string, string) {
 	for i, _ := range rows {
 		if rows[i][3] == targetLoca {
 			targetX = rows[i][5]
-			targetY = rows[i][6]			
+			targetY = rows[i][6]
 			break
 		}
 	}
@@ -109,7 +109,7 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 			num2, _ = strconv.Atoi(item.FcstTime)
 
 			if num2 > num1 {
-				futureRain = item.FcstValue				
+				futureRain = item.FcstValue
 			}
 		}
 	}
@@ -130,7 +130,7 @@ func GetWeatherInfoByTownName(input string) (weatherDesc string, temparature str
 		isSnow = true
 	}
 
-	strings.Replace(temparature, "-", "영하 ", -1)
+	temparature = strings.Replace(temparature, "-", "영하 ", -1)
 
 	return weatherDesc, temparature, isRain, isSnow
 }
