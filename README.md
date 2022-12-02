@@ -13,7 +13,7 @@ $ PORT=8088 go run .
 
 ### File structure
 ```bash
-nugu-bus
+nugu-backend
 ├── README.md
 ├── go.mod
 ├── go.sum
@@ -21,6 +21,7 @@ nugu-bus
 ├── logic_dday.go
 ├── logic_stock.go
 ├── logic_weather.go
+├── logic_zip.go
 ├── main.go
 ├── requests_commmon.go
 ├── requests_handler.go
@@ -38,6 +39,7 @@ nugu-bus
 ├── struct_openapi_bus.go
 ├── struct_openapi_stock.go
 ├── struct_openapi_weather.go
+├── struct_openapi_zip.go
 └── templates
     ├── footer.html
     ├── header.html

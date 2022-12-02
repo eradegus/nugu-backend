@@ -83,7 +83,7 @@ func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 
 	// Time Calculation
 	nowFullTime := time.Now()
-	pastFullTime := nowFullTime.AddDate(0, 0, -1)
+	pastFullTime := nowFullTime.AddDate(0, 0, -2)
 	pastDate := pastFullTime.Format("20060102")
 	pastMonth := pastDate[:6]
 
@@ -114,7 +114,6 @@ func GetZipPriceByCodeAndName(targetCode string, targetApt string) string {
 	xml.Unmarshal(resData, &xmlData)
 
 	itemLists := xmlData.Body.Items.Item
-
 	resultZipPrice := ""
 	for _, item := range itemLists {
 		if item.Apt == targetApt {

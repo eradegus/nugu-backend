@@ -11,7 +11,7 @@ import (
 )
 
 func PostUserDB(c *gin.Context) {
-	fmt.Println("POST  \"" + c.Request.URL.String() + "\"")
+	fmt.Printf("[SKT-NUGU] POST \"%s\" from user ..\n",  c.Request.URL.String())
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -36,7 +36,7 @@ func PostUserDB(c *gin.Context) {
 	userDB.ZipInfo.TownName, userDB.ZipInfo.TownCode = GetLocationInfoByAptName(userDB.ZipName)
 
 	userDB.TimeStamp = time.Now().String()
-	fmt.Println(userDB)
+	fmt.Printf("[SKT-NUGU] User DB: %v\n", userDB)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
@@ -44,7 +44,7 @@ func PostUserDB(c *gin.Context) {
 }
 
 func PostGoodmorning(c *gin.Context) {
-	fmt.Printf("[SKT-NUGU] POST  \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
+	fmt.Printf("[SKT-NUGU] POST \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -143,7 +143,7 @@ func PostGoodmorning(c *gin.Context) {
 }
 
 func PostSeeya(c *gin.Context) {
-	fmt.Printf("[SKT-NUGU] POST  \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
+	fmt.Printf("[SKT-NUGU] POST \"%s\" from speaker.nugu.nu110.se ..\n",  c.Request.URL.String())
 
 	// Read request body
 	body, err := ioutil.ReadAll(c.Request.Body)
@@ -166,7 +166,7 @@ func PostSeeya(c *gin.Context) {
 	//////////////////////////////////////////////////
 	// Start Logic (logic_*.go file)
 
-	result := "네! "
+	result := "네~! "
 	if userDB.TimeStamp != "" {
 
 		// Bus
