@@ -1,6 +1,5 @@
-# NUGU Bus (server)
-Backend proxy of nugu bus project
-
+# NUGU Backend
+Backend proxy
 
 ### How to run
 ```bash
